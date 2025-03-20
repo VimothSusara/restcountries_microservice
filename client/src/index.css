@@ -1,0 +1,214 @@
+:root {
+  /* color palette */
+  --orange-darker: #eb8b1d;
+  --orange-dark: #FF971D;
+  --orange-light: #ffba6c;
+  --orange-dim: #FFE8D6;
+  --gray-light: #F9F6F7;
+  --white-light: #FFFFFF;
+  --gray-dark: #727272;
+}
+
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  margin: 0;
+}
+
+/* body::-webkit-scrollbar {
+  width: 7px;
+  opacity: 0;
+  background-color: var(--gray-light);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--orange-dim);
+  border-radius: 10px;
+} */
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.main-logo {
+  width: 240px;
+  height: 90px;
+}
+
+.landing-header {
+  height: 130px;
+  transition: all 0.5s ease-in-out;
+  animation: landing-header 0.4s ease-in-out;
+}
+
+@keyframes landing-header {
+  0% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+.header {
+  height: 130px;
+  transition: all 0.5s ease-in-out;
+  animation: header 0.4s ease-in-out;
+}
+
+@keyframes header {
+  0% {
+    transform: translateY(-50%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 991px) {
+  .landing-header {
+    height: fit-content;
+  }
+}
+
+.login-img {
+  width: 60%;
+  height: 200px;
+}
+
+.hero-section,
+.hiw-section {
+  width: 100%;
+  height: auto;
+  min-height: calc(100vh - 130px);
+}
+
+.feature-section {
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 991px) {
+  .hero-section {
+    min-height: fit-content;
+  }
+}
+
+.landing-nav:hover {
+  color: var(--orange-light) !important;
+  transition: all 0.2s ease-in-out;
+}
+
+.nav-item .landing-nav.current {
+  color: var(--orange-light);
+  border-bottom: 1px solid var(--orange-light);
+  transition: all 0.2s ease-in-out;
+}
+
+.sign-up-btn {
+  background-color: var(--orange-dark);
+  color: var(--white-light);
+  border: none;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.sign-up-btn:hover {
+  background-color: var(--orange-dim);
+  color: var(--orange-dark);
+  transition: all 0.2s ease-in-out;
+}
+
+.login-btn {
+  background-color: var(--white-light);
+  color: var(--orange-dark);
+  border: none;
+  text-decoration: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.login-btn:hover {
+  background-color: var(--orange-dim);
+  color: var(--orange-dark);
+  transition: all 0.2s ease-in-out;
+}
+
+.modal-login-btn {
+  background-color: var(--white-light);
+  color: var(--orange-dark);
+  border: 1px solid var(--orange-dark);
+  font-size: large;
+  padding: 4px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.modal-login-btn:hover {
+  background-color: var(--orange-dim);
+  color: var(--orange-dark);
+  border: 1px solid var(--white-light);
+  transition: all 0.2s ease-in-out;
+}
+
+.getStarted-btn {
+  background-color: var(--orange-dark);
+  color: var(--white-light);
+  border: none;
+  padding: 6px 10px;
+  text-decoration: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.getStarted-btn:hover {
+  background-color: var(--orange-darker);
+  transition: all 0.2s ease-in-out;
+}
+
+.learn-more-btn {
+  background-color: var(--white-light);
+  color: var(--orange-dark);
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.learn-more-btn:hover {
+  background-color: var(--orange-dim);
+  color: var(--orange-dark);
+  transition: all 0.2s ease-in-out;
+}
+
+#features .card {
+  height: fit-content;
+}

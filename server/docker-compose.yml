@@ -1,0 +1,15 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    container_name: restcountries-middleware-server
+    ports:
+      # - "3050:3050"
+      - "${PORT:-3050}:${PORT:-3050}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    working_dir: /app
+    command: npm run dev
