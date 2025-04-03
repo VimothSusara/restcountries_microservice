@@ -15,4 +15,10 @@ router.get("/checkAuth", authController.checkAuth);
 //logout user
 router.post("/logout", authController.logout);
 
+//forgot password
+router.post("/forgot-password", authController.forgotPassword);
+
+//reset password
+router.post("/reset-password/:token", authController.resetPassword);
+
 module.exports = router;

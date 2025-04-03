@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 
 import logo from "@/assets/images/logo.png";
+import AdminRoute from "../protectedWrappers/AdminRoute";
 
 const Header = () => {
   return (
@@ -28,6 +29,13 @@ const Header = () => {
             <NavLink className="nav-link" to={"/app"}>
               Dashboard
             </NavLink>
+            {
+              <AdminRoute>
+                <NavLink className="nav-link" to={"/app/api-key-management"}>
+                  Manage Keys
+                </NavLink>
+              </AdminRoute>
+            }
             <NavLink className="nav-link" to={"/app/settings"}>
               Settings
             </NavLink>

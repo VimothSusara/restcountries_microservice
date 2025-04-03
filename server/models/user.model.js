@@ -37,7 +37,7 @@ class User {
   }
 
   static alterColumn() {
-    const sql = `ALTER TABLE users ADD COLUMN role_id INTEGER NOT NULL DEFAULT 2`;
+    const sql = `ALTER TABLE users ADD COLUMN reset_password_expires DATETIME`;
     return db.run(sql);
   }
 
@@ -63,8 +63,7 @@ class User {
     first_name,
     last_name,
     email,
-    phone_number,
-    address
+    phone_number
   ) {
     //password hashing
     const saltRounds = 10;
@@ -77,20 +76,12 @@ class User {
         if (err) {
           return reject(err);
         } else {
-          const user_id = this.lastID;
-          const sql = `INSERT INTO user_details (id, user_id, first_name, last_name, email, phone_number, address) VALUES (?,?,?,?,?,?,?)`;
+          const user_id = id;
+          const sql = `INSERT INTO user_details (id, user_id, first_name, last_name, email, phone_number) VALUES (?,?,?,?,?,?)`;
           db.run(
             sql,
-            [
-              uuidv4(),
-              user_id,
-              first_name,
-              last_name,
-              email,
-              phone_number,
-              address,
-            ],
-            (err) => {
+            [uuidv4(), user_id, first_name, last_name, email, phone_number],
+            function (err) {
               if (err) {
                 return reject(err);
               }
@@ -110,6 +101,54 @@ class User {
           return reject(err);
         }
         resolve(row);
+      });
+    });
+  }
+
+  static findUserWithEmail(email) {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT id, user_id FROM user_details WHERE email =?`;
+      db.get(sql, [email], (err, row) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(row);
+      });
+    });
+  }
+
+  static saveToken(token, expiresIn, user_id) {
+    return new Promise((resolve, reject) => {
+      const sql = `UPDATE users SET reset_password_token = ?, reset_password_expires = ? WHERE id = ?`;
+      db.run(sql, [token, expiresIn.toISOString(), user_id], function (err) {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
+  }
+
+  static findUserWithResetToken(token) {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT * FROM users WHERE reset_password_token = ? AND reset_password_expires > ?`;
+      db.get(sql, [token, new Date().toISOString()], (err, row) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(row);
+      });
+    });
+  }
+
+  static updatePassword(newPassword, user_id) {
+    return new Promise((resolve, reject) => {
+      const sql = `UPDATE users SET password =?, reset_password_token = NULL, reset_password_expires = NULL WHERE id = ?`;
+      db.run(sql, [newPassword, user_id], function (err) {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
       });
     });
   }

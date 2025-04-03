@@ -39,40 +39,40 @@ class ApiKey {
     return db.run(sql);
   }
 
-  static async createApiKey(user_id) {
-    const id = uuidv4();
-    const key = uuidv4();
+  // static async createApiKey(user_id) {
+  //   const id = uuidv4();
+  //   const key = uuidv4();
 
-    // Hash the key for security
-    const saltRounds = 10;
-    const hashedKey = await bcrypt.hash(key, saltRounds);
+  //   // Hash the key for security
+  //   const saltRounds = 10;
+  //   const hashedKey = await bcrypt.hash(key, saltRounds);
 
-    return new Promise((resolve, reject) => {
-      const check_existing_key_sql = `SELECT * FROM api_keys WHERE user_id = ?`;
-      db.get(check_existing_key_sql, [user_id], async (err, existing_key) => {
-        if (err) {
-          return reject(err);
-        } else {
-          if (existing_key) {
-            const update_api_key_sql = `UPDATE api_keys SET key = ? WHERE user_id = ?`;
-            db.run(update_api_key_sql, [hashedKey, user_id], (err) => {
-              if (err) {
-                return reject(err);
-              }
-              resolve(key);
-            });
-          }
-          const insert_api_key_sql = `INSERT INTO api_keys (id, key, user_id) VALUES (?,?,?)`;
-          db.run(insert_api_key_sql, [id, hashedKey, user_id], (err) => {
-            if (err) {
-              return reject(err);
-            }
-            resolve(key);
-          });
-        }
-      });
-    });
-  }
+  //   return new Promise((resolve, reject) => {
+  //     const check_existing_key_sql = `SELECT * FROM api_keys WHERE user_id = ?`;
+  //     db.get(check_existing_key_sql, [user_id], async (err, existing_key) => {
+  //       if (err) {
+  //         return reject(err);
+  //       } else {
+  //         if (existing_key) {
+  //           const update_api_key_sql = `UPDATE api_keys SET key = ? WHERE user_id = ?`;
+  //           db.run(update_api_key_sql, [hashedKey, user_id], (err) => {
+  //             if (err) {
+  //               return reject(err);
+  //             }
+  //             resolve(key);
+  //           });
+  //         }
+  //         const insert_api_key_sql = `INSERT INTO api_keys (id, key, user_id) VALUES (?,?,?)`;
+  //         db.run(insert_api_key_sql, [id, hashedKey, user_id], (err) => {
+  //           if (err) {
+  //             return reject(err);
+  //           }
+  //           resolve(key);
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
 
   //generate a unique api key
   static async generateApiKey() {
@@ -127,7 +127,7 @@ class ApiKey {
             .compare(key, row.key)
             .then((isMatch) => {
               if (isMatch) {
-                const usage_sql = `UPDATE api_keys SET last_used = CURRENT_TIMESTAMP, used_count = used_count + 1 WHERE key =?`;
+                const usage_sql = `UPDATE api_keys SET last_used = CURRENT_TIMESTAMP, used_count = used_count + 1 WHERE key = ?`;
                 db.run(usage_sql, [row.key]);
                 return resolve(row);
               }

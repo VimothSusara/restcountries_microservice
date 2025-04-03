@@ -23,11 +23,17 @@ const Login = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const { login } = useAuthStore();
+  const { login, isAuthenticated, error } = useAuthStore();
 
   const onSubmit = async (data) => {
-    // await login(data.username, data.password);
-    console.log(data);
+    const response = await login(data.username, data.password);
+    // console.log(data);
+    if (response.success) {
+      console.log("Login successful");
+      //TODO: handle login
+    } else {
+      console.log("Login failed", response.message);
+    }
   };
 
   return (
@@ -35,9 +41,13 @@ const Login = () => {
       <div className="container login-container col-md-7 gap-4 mt-md-5 mt-3 d-flex justify-content-center fade-in shadow p-4">
         <div className="col-md-6 px-3 py-1">
           <div className="mb-2 mb-md-4 text-center">
-            <h3 style={{color: 'var(--gray-dark)'}}>Login to your Account</h3>
+            <h3 style={{ color: "var(--gray-dark)" }}>Login to your Account</h3>
           </div>
-          <div className=""></div>
+          {error ? (
+            <div className="alert alert-danger p-1 my-2" role="alert">
+              <div className="text-danger">{error}</div>
+            </div>
+          ) : null}
           <form onSubmit={handleSubmit(onSubmit)} className="">
             <div className="form-group mb-md-3 mb-1">
               <label htmlFor="username" className="mb-1">
@@ -82,12 +92,17 @@ const Login = () => {
             </div>
           </form>
         </div>
-        <div className="col-md-6 d-none d-md-block">
+        <div className="col-md-6 d-none d-md-block justify-content-center align-content-center">
           <div className="text-center col-md-12">
             <img src={logoImg} alt="Login Image" className="login-img" />
           </div>
           <div className="text-center mt-3">
-            <h2><span className="" style={{color: 'var(--orange-dark)'}}>Welcome </span>Back!</h2>
+            <h2>
+              <span className="" style={{ color: "var(--orange-dark)" }}>
+                Welcome{" "}
+              </span>
+              Back!
+            </h2>
             <p>
               Don&apos;t have an account yet?
               <span className="ms-2">
