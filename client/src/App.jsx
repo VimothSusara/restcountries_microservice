@@ -23,7 +23,7 @@ const Login = lazy(() => import("@/pages/auth/Login"));
 const Register = lazy(() => import("@/pages/auth/Register"));
 const Home = lazy(() => import("@/pages/auth/Home"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
-const Settings = lazy(() => import("@/pages/Settings"));
+const Docs = lazy(() => import("@/pages/Docs"));
 const Profile = lazy(() => import("@/pages/Profile"));
 
 //wrappers
@@ -126,14 +126,12 @@ function App() {
               }
             >
               <Route index element={<Dashboard />} />
-              <Route path="settings" element={<Settings />} />
+              <Route path="docs" element={<Docs />} />
               <Route path="profile" element={<Profile />} />
               <Route
                 path="api-key-management"
                 element={
-                  <AdminRoute>
-                    <ApiKeyManagement />
-                  </AdminRoute>
+                  <ApiKeyManagement />
                 }
               ></Route>
             </Route>

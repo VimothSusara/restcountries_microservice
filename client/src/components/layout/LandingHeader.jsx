@@ -3,6 +3,8 @@ import { NavLink } from "react-router-dom";
 import logo from "@/assets/images/logo.png";
 import useAuthStore from "@/store/authStore";
 
+import { CircleUser } from 'lucide-react';
+
 const LandingHeader = () => {
   const { isAuthenticated } = useAuthStore();
 
@@ -44,12 +46,15 @@ const LandingHeader = () => {
 
           {isAuthenticated ? (
             <div className="navbar-nav ms-auto gap-lg-3 me-lg-5">
-              <NavLink className="nav-link" to={"/app"}>
+              <NavLink end className={({ isActive }) => `navbar-link text-decoration-none d-flex align-items-center ${isActive ? 'active-link' : ''}`} to={"/app"}>
                 Dashboard
               </NavLink>
               {/* <NavLink className="logout-btn" to={"/auth/logout"}>
                 LOGOUT
               </NavLink> */}
+              <NavLink className="nav-link d-flex align-items-center" to={"/app/profile"} title="profile">
+              <CircleUser size={35} style={{ color: "var(--orange-dark)" }} />
+            </NavLink>
             </div>
           ) : (
             <div className="navbar-nav ms-auto gap-lg-3 me-lg-5">
