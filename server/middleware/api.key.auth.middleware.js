@@ -6,16 +6,11 @@ const apiKeyAuth = async (req, res, next) => {
     return res.status(401).json({ message: "API key is required." });
   }
 
-  const { user_id } = req.body;
-  if (!user_id) {
-    return res.status(401).json({ message: "User is required." });
-  }
-
   try {
-    const apiKeyData = await ApiKey.validate(apiKey, user_id);
+    const apiKeyData = await ApiKey.validate(apiKey);
 
     if (!apiKeyData) {
-      return res.status(401).json({ message: "Invalid API key or user ID." });
+      return res.status(401).json({ message: "Invalid API key" });
     }
     
     req.api_key = apiKeyData;

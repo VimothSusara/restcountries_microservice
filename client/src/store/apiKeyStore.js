@@ -6,6 +6,7 @@ const useApiKeyStore = create((set) => ({
     keys: [],
     loading: false,
     error: null,
+    api_stats: null,
 
     fetchKeys: async () => {
         set({ loading: true, error: null });
@@ -56,7 +57,7 @@ const useApiKeyStore = create((set) => ({
         catch (err) {
             throw new Error(err.response?.data?.message || 'Failed to delete the API key!');
         }
-    }
+    },
 }));
 
 export default useApiKeyStore;

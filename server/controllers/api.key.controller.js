@@ -122,4 +122,30 @@ const deleteApiKey = async (req, res) => {
   }
 }
 
-module.exports = { generate, saveApiKey, getApiKeys, updateApiKey, deleteApiKey };
+const getApiStats = async (req, res) => {
+  try {
+    const { id } = req.user;
+
+    const [
+      getStats,
+      getDailyUsage,
+      getUsageForEachKey
+    ] = await Promise.all([
+      ApiKey.getApiStats(id),
+      ApiKey.getDailyUsage(id),
+      ApiKey.getUsageForEachKey(id)
+    ])
+
+    return res.status(200).json({
+      get_stats: getStats,
+      daily_usage: getDailyUsage,
+      each_key_usage: getUsageForEachKey
+    })
+  }
+  catch (error) {
+    console.log("Error fetching api stats: ", error);
+    return res.status(500).json({ message: "Failed to get api stats" })
+  }
+}
+
+module.exports = { generate, saveApiKey, getApiKeys, updateApiKey, deleteApiKey, getApiStats };

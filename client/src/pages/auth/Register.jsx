@@ -63,7 +63,7 @@ const Register = () => {
 
   return (
     <>
-      <div className="container login-container col-md-8 gap-4 mt-md-1 mt-1 d-flex justify-content-center fade-in shadow p-2">
+      <div className="container login-container col-md-8 gap-4 mt-md-5 mt-1 d-flex justify-content-center fade-in shadow p-2">
         <div className="col-md-5 d-none d-md-block justify-content-center align-content-center px-3">
           <div className="text-center col-md-12">
             <img src={logoImg} alt="Login Image" className="login-img" />

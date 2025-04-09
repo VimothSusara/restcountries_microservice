@@ -17,6 +17,7 @@
   --blue-medium: #2196F3;
   --blue-light: #64B5F6;
   --blue-dark: #1976D2;
+  --black-medium: rgb(33, 33, 33);
 }
 
 html {
@@ -119,7 +120,7 @@ body::-webkit-scrollbar {
 }
 
 .navbar-link {
-  color: #484848;
+  color: #565656;
   padding: 0 .5rem;
   transition: all 0.3s ease-in-out;
 }
@@ -363,4 +364,90 @@ body::-webkit-scrollbar {
 .copy-btn:hover {
   background-color: #ebebeb;
   transition: all 0.3s ease-in-out;
+}
+
+.profile-main-container {
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.profile-main-container::-webkit-scrollbar {
+  display: none;
+}
+
+.dashboard-main-container {
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.dashboard-main-container::-webkit-scrollbar {
+  display: none;
+}
+
+.user-card-container {
+  background-color: #ddf0ff;
+
+  .name-card-text {
+    color: #2196F3;
+  }
+}
+
+.total-request-card-container {
+  background-color: #d8ffd7;
+
+  .total-request-text {
+    color: rgb(56, 134, 56);
+  }
+}
+
+.success-rate-card-container {
+  background-color: #fff2d6;
+
+  .success-rate-text {
+    color: rgb(223, 131, 78);
+  }
+}
+
+.failed-request-card-container {
+  background-color: #ffd7d7;
+
+  .failed-request-text {
+    color: #e03636;
+  }
+}
+
+.feature-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card:hover.card-body i {
+  animation: pulse 0.3s ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.hiw-card {
+  background-color: var(--orange-dim);
+  border: var(--orange-light) 2px solid;
+}
+
+.hiw-card i , h5 {
+  color: var(--orange-dark);
 }

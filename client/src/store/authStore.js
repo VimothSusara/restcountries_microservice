@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { login, checkAuth, logout, register } from "@/services/authServices";
+import { login, checkAuth, logout, register, updateUser, updatePassword, verifyEmailAddress } from "@/services/authServices";
 
 const useAuthStore = create((set) => ({
   user: null,
@@ -18,7 +18,7 @@ const useAuthStore = create((set) => ({
   ) => {
     set({ error: null });
     try {
-      const response = await register(
+      await register(
         username,
         first_name,
         last_name,
@@ -70,6 +70,38 @@ const useAuthStore = create((set) => ({
       console.log(err);
     }
   },
+
+  updateUserDetails: async (username, first_name, last_name, phone_number, email) => {
+    try {
+      const response = await updateUser(username, first_name, last_name, phone_number, email);
+      set({
+        user: response.data.user,
+      })
+    }
+    catch (err) {
+      throw new Error(err.response?.data?.message || 'Failed to update user details');
+    }
+  },
+
+  updatePassword: async (current_password, password) => {
+    try {
+      await updatePassword(current_password, password);
+      return ({ success: true })
+    }
+    catch (err) {
+      throw new Error(err.response?.data?.message || 'Failed to update password')
+    }
+  },
+
+  emailVerify: async (email) => {
+    try {
+      await verifyEmailAddress(email);
+      return ({ success: true });
+    }
+    catch (err) {
+      throw new Error(err.response?.data?.message || 'Failed to verify email. Please try again')
+    }
+  }
 }));
 
 export default useAuthStore;

@@ -3,10 +3,14 @@ import { NavLink } from "react-router-dom";
 import logo from "@/assets/images/logo.png";
 import useAuthStore from "@/store/authStore";
 
-import { CircleUser } from 'lucide-react';
+import { CircleUser, LogOut } from 'lucide-react';
 
 const LandingHeader = () => {
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    await logout();
+  };
 
   return (
     // <header className="landing-header h-25 w-100 bg-light text-primary d-flex justify-content-center align-items-center border border-1">
@@ -30,16 +34,16 @@ const LandingHeader = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarDropdownContainer">
           <div className="navbar-nav mx-auto gap-lg-5">
-            <NavLink className="nav-link active" aria-current="page" to={"/"}>
+            <NavLink className="nav-link text-secondary" aria-current="page">
               Home
             </NavLink>
-            <NavLink className="nav-link" to={"/"}>
+            <NavLink className="nav-link text-secondary">
               Features
             </NavLink>
-            <NavLink className="nav-link" to={"/"}>
+            <NavLink className="nav-link text-secondary">
               How it Works
             </NavLink>
-            <NavLink className="nav-link" to={"/"}>
+            <NavLink className="nav-link text-secondary">
               About
             </NavLink>
           </div>
@@ -53,8 +57,11 @@ const LandingHeader = () => {
                 LOGOUT
               </NavLink> */}
               <NavLink className="nav-link d-flex align-items-center" to={"/app/profile"} title="profile">
-              <CircleUser size={35} style={{ color: "var(--orange-dark)" }} />
-            </NavLink>
+                <CircleUser size={35} style={{ color: "var(--orange-dark)" }} />
+              </NavLink>
+              <NavLink className="nav-link d-flex align-items-center" onClick={handleLogout} title="logout">
+                <LogOut size={25} style={{ color: "var(--red-medium)" }} />
+              </NavLink>
             </div>
           ) : (
             <div className="navbar-nav ms-auto gap-lg-3 me-lg-5">

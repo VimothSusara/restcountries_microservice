@@ -31,39 +31,6 @@ import ProtectedRoute from "@/components/protectedWrappers/ProtectedRoute";
 import AuthRoute from "@/components/protectedWrappers/AuthRoute";
 import AdminRoute from "./components/protectedWrappers/AdminRoute";
 
-//Protected Route Wrapper
-// const ProtectedRoute = ({ children }) => {
-//   const { isAuthenticated } = useAuthStore();
-//   const location = useLocation();
-
-//   return isAuthenticated ? (
-//     children
-//   ) : (
-//     <Navigate to="/auth/login" replace state={{ from: location }} />
-//   );
-// };
-
-// const AuthRoute = ({ children }) => {
-//   const { isAuthenticated } = useAuthStore();
-//   const location = useLocation();
-
-//   return isAuthenticated ? (
-//     <Navigate to={location.state?.from?.pathname || "/app"} replace />
-//   ) : (
-//     children
-//   );
-// };
-
-// const AdminRoute = ({ children }) => {
-//   const { isAuthenticated, user } = useAuthStore();
-
-//   return isAuthenticated && user && user?.role_id === 1 ? (
-//     children
-//   ) : (
-//     <Navigate to="/app/dashboard" replace />
-//   );
-// };
-
 function App() {
   const { checkAuth, loading, user } = useAuthStore();
 

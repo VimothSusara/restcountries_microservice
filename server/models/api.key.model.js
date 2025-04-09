@@ -5,6 +5,7 @@ const crypto = require("crypto");
 
 const { salt_rounds, maximum_api_keys } = require("../utils/constant.values");
 const { use } = require("../routes/auth.routes");
+const { resolve } = require("path");
 
 class ApiKey {
   static createTable() {
@@ -248,27 +249,92 @@ class ApiKey {
     })
   }
 
-  static async validate(key, user_id) {
+  static async getApiStats(id) {
     return new Promise((resolve, reject) => {
-      const sql = `SELECT * FROM api_keys WHERE user_id = ? AND active = 1`;
-      db.get(sql, [user_id], (err, row) => {
+      const sql = `
+      SELECT 
+        COUNT(*) as total,
+        SUM(CASE WHEN response_status BETWEEN 200 and 299 THEN 1 ELSE 0 END) as success,
+        SUM(CASE WHEN response_status >= 400 THEN 1 ELSE 0 END) as failed
+      FROM request_logs 
+      WHERE user_id = ?`;
+      db.get(sql, [id], (err, row) => {
         if (err) {
           return reject(err);
-        } else if (row) {
-          bcrypt
-            .compare(key, row.key)
-            .then((isMatch) => {
-              if (isMatch) {
-                const usage_sql = `UPDATE api_keys SET last_used = CURRENT_TIMESTAMP, used_count = used_count + 1 WHERE key = ?`;
-                db.run(usage_sql, [row.key]);
-                return resolve(row);
-              }
-              resolve(null);
-            })
-            .catch((err) => reject(err));
-        } else {
-          resolve(null);
         }
+
+        const { total = 0, success = 0, failed = 0 } = row;
+
+        const success_rate = total === 0 ? 0 : ((success / total) * 100).toFixed(2);
+
+        resolve({
+          total,
+          success,
+          failed,
+          success_rate: Number(success_rate)
+        })
+
+      })
+    })
+  }
+
+  static async getDailyUsage(id, limit = 30) {
+    const sql = `
+    SELECT 
+      DATE(created) as date,
+      COUNT(*) as total,
+      SUM(CASE WHEN response_status BETWEEN 200 AND 299 THEN 1 ELSE 0 END) as success,
+      SUM(CASE WHEN response_status >= 400 THEN 1 ELSE 0 END) as failed
+    FROM request_logs
+    WHERE user_id = ?
+    GROUP BY DATE(created)
+    ORDER BY date DESC
+    LIMIT ?
+    `;
+
+    return new Promise((resolve, reject) => {
+      db.all(sql, [id, limit], (err, row) => {
+        if (err) return reject(err);
+
+        resolve(row.reverse());
+      })
+    })
+  }
+
+  static async getUsageForEachKey(id) {
+    const sql = `SELECT active, last_used, used_count, key_prefix FROM api_keys WHERE user_id = ?`;
+    return new Promise((resolve, reject) => {
+      db.all(sql, [id], (err, row) => {
+        if (err) return reject(err);
+
+        resolve(row);
+      })
+    })
+  }
+
+  static async validate(apiKey) {
+    return new Promise((resolve, reject) => {
+      const sql = `SELECT * FROM api_keys WHERE active = 1`;
+      db.all(sql, [], async (err, rows) => {
+        if (err) {
+          return reject(err);
+        }
+
+        for (const row of rows) {
+          const isMatch = await bcrypt.compare(apiKey, row.key);
+          if (isMatch) {
+            const usageSql = `
+              UPDATE api_keys 
+              SET last_used = CURRENT_TIMESTAMP, used_count = used_count + 1
+              WHERE id = ?
+            `;
+            db.run(usageSql, [row.id]);
+
+            return resolve(row);
+          }
+        }
+
+        resolve(null); // no match found
       });
     });
   }

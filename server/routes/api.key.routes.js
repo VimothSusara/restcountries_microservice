@@ -27,4 +27,7 @@ router.post("/update/:id", apiKeyController.updateApiKey);
 //delete an api key
 router.delete("/delete/:id", apiKeyController.deleteApiKey);
 
+//get api stats for dashboard
+router.get("/stats", apiKeyController.getApiStats)
+
 module.exports = router;

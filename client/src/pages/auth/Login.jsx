@@ -67,7 +67,7 @@ const Login = () => {
                 </div>
               )}
             </div>
-            <div className="form-group mb-md-3 mb-1">
+            <div className="form-group mb-1">
               <label htmlFor="password" className="mb-1">
                 Password
               </label>
@@ -84,6 +84,11 @@ const Login = () => {
                   {errors.password?.message}
                 </div>
               )}
+            </div>
+            <div className="d-flex justify-content-end me-1">
+              <NavLink to={"/auth/forgot-password"} className="text-decoration-none">
+                <p className="text-secondary" style={{ fontSize: '.9rem'}}>Forgot Password ?</p>
+              </NavLink>
             </div>
             <div className="form-group p-2 row">
               <button type="submit" className="sign-up-btn">

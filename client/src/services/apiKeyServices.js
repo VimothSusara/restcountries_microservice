@@ -49,3 +49,12 @@ export const deleteApiKey = async (id) => {
         }
     )
 }
+
+export const fetchApiStats = async () => {
+    return await axios.get(
+        `${API_BASE_URL}/api/key/stats`,
+        {
+            withCredentials: true
+        }
+    )
+}

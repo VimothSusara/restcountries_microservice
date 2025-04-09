@@ -32,6 +32,7 @@ const register = async (req, res) => {
 
     // Check if the username already exists
     const existingUser = await User.findUsername(username);
+
     if (existingUser) {
       return res.status(400).json({ message: "Username already exists." });
     }
@@ -55,6 +56,14 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    if (!username) {
+      return res.status(401).json({ message: "Username is required" });
+    }
+
+    if (!password) {
+      return res.status(401).json({ message: "Password is required" });
+    }
 
     const user = await User.findUsername(username);
     // console.log("user body: ", user);
@@ -89,7 +98,15 @@ const login = async (req, res) => {
 
     res.json({
       message: "Logged in successfully",
-      user: { username: user.username, id: user.id, role_id: user.role_id },
+      user: {
+        id: user.id,
+        username: user.username,
+        role_id: user.role_id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        phone_number: user.phone_number
+      }
     });
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -110,11 +127,86 @@ const checkAuth = async (req, res) => {
       return res.status(403).json({ authenticated: false });
     }
 
-    res.status(200).json({ authenticated: true, user });
+    res.status(200).json({
+      authenticated: true,
+      user: {
+        id: user.id,
+        username: user.username,
+        role_id: user.role_id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        phone_number: user.phone_number
+      }
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
+
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const { username, first_name, last_name, phone_number, email } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const existingUser = await User.findUsername(username);
+
+    if (existingUser && existingUser.id !== id) {
+      return res.status(400).json({ message: "Username already exists." });
+    }
+
+    const user = await User.updateUser(id, username, first_name, last_name, phone_number, email);
+
+    if (!user) {
+      return res.status(500).json({ message: "User update failed" });
+    }
+
+    res.status(200).json({
+      user: {
+        id: user.id,
+        username: user.username,
+        role_id: user.role_id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        phone_number: user.phone_number
+      }
+    });
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
+const updatePasswordWithExisting = async (req, res) => {
+  try {
+    const { id } = req.user;
+    const { password, current_password } = req.body;
+
+    if (!id) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    if (!password) {
+      return res.status(400).json({ message: "Current password is required" });
+    }
+
+    if (!current_password) {
+      return res.status(400).json({ message: "New password is required" });
+    }
+
+    await User.updatePasswordWithExistingPass(id, password, current_password);
+
+    res.status(200).json({ message: "Password updated successfully" })
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
 
 const logout = async (req, res) => {
   res.clearCookie("access_token");
@@ -123,13 +215,17 @@ const logout = async (req, res) => {
 };
 
 const forgotPassword = async (req, res) => {
-  const { email } = req.body;
-
   try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(404).json({ message: "Email is required" });
+    }
+
     const user = await User.findUserWithEmail(email);
 
     if (!user) {
-      return res.status(404).json({ message: "User not found." });
+      return res.status(404).json({ message: "Email is incorrect." });
     }
 
     // Generate a unique token for password reset
@@ -214,4 +310,6 @@ module.exports = {
   logout,
   forgotPassword,
   resetPassword,
+  updateUser,
+  updatePasswordWithExisting
 };
