@@ -61,5 +61,16 @@ npm run dev
 
 ### Backend (With Docker)
 
+#### Build and start containers
+
+```bash
+docker-compose up --build
+```
+
+#### Stop Containers
+
+```bash
+docker-compose down
+```
 
 
