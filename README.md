@@ -39,14 +39,14 @@ RestCountries Microservice is a full-stack API key management service. It provid
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/restcountries-microservice.git
-cd restcountries-microservice
+git clone https://github.com/your-username/restcountries_microservice.git
+cd restcountries_microservice
 ```
 
 ### Frontend
 
 ```bash
-cd frontend
+cd client
 npm install
 npm run dev
 ```
@@ -54,7 +54,7 @@ npm run dev
 ### Backend (Without Docker)
 
 ```bash
-cd backend
+cd server
 npm install
 npm run dev
 ```
