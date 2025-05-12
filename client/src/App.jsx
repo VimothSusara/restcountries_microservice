@@ -13,40 +13,26 @@ import useAuthStore from "@/store/authStore";
 //layouts
 import MainLayout from "@/layouts/MainLayout";
 import LandingLayout from "@/layouts/LandingLayout";
+import Loading from "@/components/common/Loading";
+import ForgotPassword from "@/pages/auth/ForgotPassword";
+import NotFound from "@/pages/error/NotFound";
+import ApiKeyManagement from "@/pages/ApiKeyManagement";
 
 //pages
 const Login = lazy(() => import("@/pages/auth/Login"));
 const Register = lazy(() => import("@/pages/auth/Register"));
 const Home = lazy(() => import("@/pages/auth/Home"));
 const Dashboard = lazy(() => import("@/pages/Dashboard"));
-const Settings = lazy(() => import("@/pages/Settings"));
+const Docs = lazy(() => import("@/pages/Docs"));
 const Profile = lazy(() => import("@/pages/Profile"));
 
-//Protected Route Wrapper
-const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated } = useAuthStore();
-  const location = useLocation();
-
-  return isAuthenticated ? (
-    children
-  ) : (
-    <Navigate to="/auth/login" replace state={{ from: location }} />
-  );
-};
-
-const AuthRoute = ({ children }) => {
-  const { isAuthenticated } = useAuthStore();
-  const location = useLocation();
-
-  return isAuthenticated ? (
-    <Navigate to={location.state?.from?.pathname || "/app"} replace />
-  ) : (
-    children
-  );
-};
+//wrappers
+import ProtectedRoute from "@/components/protectedWrappers/ProtectedRoute";
+import AuthRoute from "@/components/protectedWrappers/AuthRoute";
+import AdminRoute from "./components/protectedWrappers/AdminRoute";
 
 function App() {
-  const { checkAuth, loading } = useAuthStore();
+  const { checkAuth, loading, user } = useAuthStore();
 
   useEffect(() => {
     const verifyAuth = async () => {
@@ -60,11 +46,11 @@ function App() {
     verifyAuth();
   }, [checkAuth]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <Loading />;
 
   return (
     <>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loading />}>
         <Router>
           <Routes>
             <Route path="/" element={<LandingLayout />}>
@@ -88,6 +74,14 @@ function App() {
                   </AuthRoute>
                 }
               />
+              <Route
+                path="forgot-password"
+                element={
+                  <AuthRoute>
+                    <ForgotPassword />
+                  </AuthRoute>
+                }
+              />
             </Route>
 
             <Route
@@ -99,9 +93,16 @@ function App() {
               }
             >
               <Route index element={<Dashboard />} />
-              <Route path="settings" element={<Settings />} />
+              <Route path="docs" element={<Docs />} />
               <Route path="profile" element={<Profile />} />
+              <Route
+                path="api-key-management"
+                element={
+                  <ApiKeyManagement />
+                }
+              ></Route>
             </Route>
+            {/* <Route path="*" element={<NotFound />} /> */}
           </Routes>
         </Router>
       </Suspense>

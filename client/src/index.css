@@ -159,24 +159,6 @@ body::-webkit-scrollbar {
   transition: all 0.2s ease-in-out;
 }
 
-.modal-login-btn {
-  background-color: var(--white-light);
-  color: var(--orange-dark);
-  border: 1px solid var(--orange-dark);
-  font-size: large;
-  padding: 4px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.modal-login-btn:hover {
-  background-color: var(--orange-dim);
-  color: var(--orange-dark);
-  border: 1px solid var(--white-light);
-  transition: all 0.2s ease-in-out;
-}
-
 .getStarted-btn {
   background-color: var(--orange-dark);
   color: var(--white-light);
@@ -211,4 +193,18 @@ body::-webkit-scrollbar {
 
 #features .card {
   height: fit-content;
+}
+
+.loading-screen-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: .2rem;
+}
+
+.loading-screen-container .spinner-grow {
+  width: 4rem;
+  height: 4rem;
+  color: #FF971D;
 }
