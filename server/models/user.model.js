@@ -49,14 +49,14 @@ class User {
         return reject(new Error("Invalid access token"));
       }
       const sql = `
-        SELECT u.id, u.username, u.password, u.role_id, ud.first_name, ud.last_name, ud.email, ud.phone_number
+        SELECT u.id, u.emia, u.password, u.role_id, ud.first_name, ud.last_name, ud.email, ud.phone_number
         FROM users u
         LEFT JOIN user_details ud ON u.id = ud.user_id
         WHERE u.id = ?`;
       db.get(sql, [decoded.id], (err, row) => {
         if (err) {
           return reject(err);
-        }
+        } 
         resolve(row);
       });
     });
@@ -71,7 +71,7 @@ class User {
     phone_number
   ) {
     //password hashing
-    const saltRounds = 10;
+    const saltRounds = salt_rounds;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     return new Promise((resolve, reject) => {

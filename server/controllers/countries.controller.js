@@ -5,7 +5,7 @@ const sanitize = require('../utils/sanitize.country');
 const getAllCountries = async (req, res) => {
   // console.log(req.api_key);
   try {
-    const response = await axios.get(`${process.env.REST_COUNTRIES_API}/all`);
+    const response = await axios.get(`${process.env.REST_COUNTRIES_API}/all?fields=name`);
 
     if (!response.data) {
       res.status(404).json({ message: "Countries not found" });

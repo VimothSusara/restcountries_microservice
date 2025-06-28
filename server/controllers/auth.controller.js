@@ -12,7 +12,7 @@ const register = async (req, res) => {
   try {
     const { username, password, first_name, last_name, email, phone_number } =
       req.body;
-
+    
     // Validate the input
     if (!username) {
       return res.status(400).json({ message: "Username is required." });
@@ -45,7 +45,8 @@ const register = async (req, res) => {
       email,
       phone_number
     );
-    res
+
+    return res
       .status(201)
       .json({ message: "User registered successfully", user: newUser });
   } catch (error) {
@@ -80,7 +81,7 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials." });
     }
 
-    const accessToken = generateAccessToken(user);
+    const accessToken = generateAccessToken(user);  
     const refreshToken = generateRefreshToken(user);
 
     //set token in Http-only cookies
