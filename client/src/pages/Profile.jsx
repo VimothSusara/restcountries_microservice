@@ -1,6 +1,6 @@
 
 import EditProfileDetails from "@/components/EditProfileDetails";
-import UpdatePassword from "@/components/updatePassword";
+import UpdatePassword from "@/components/UpdatePassword";
 
 import { ToastContainer, Flip } from "react-toastify";
 
