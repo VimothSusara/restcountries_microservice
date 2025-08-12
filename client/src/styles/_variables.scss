@@ -1,0 +1,18 @@
+// Define your color palette variables
+$orange-darker: #eb8b1d;
+$orange-dark: #FF971D;
+$orange-light: #ffba6c;
+$orange-dim: #FFE8D6;
+$gray-light: #F9F6F7;
+$white-light: #FFFFFF;
+$gray-dark: #727272;
+
+// Override Bootstrap's focus variables
+$input-focus-border-color: $orange-light;
+$input-focus-box-shadow: 0 0 4px $orange-light;
+
+// Import Bootstrap with these variables
+@forward "bootstrap/scss/bootstrap" with (
+  $input-focus-border-color: $orange-light,
+  $input-focus-box-shadow: 0 0 5px $orange-light
+);

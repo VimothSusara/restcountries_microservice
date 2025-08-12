@@ -2,7 +2,19 @@ import { NavLink } from "react-router-dom";
 
 import logo from "@/assets/images/logo.png";
 
+import useAuthStore from "@/store/authStore";
+import AdminRoute from "../protectedWrappers/AdminRoute";
+
+import { CircleUser, LogOut } from 'lucide-react';
+
 const Header = () => {
+
+  const { isAuthenticated, user, logout } = useAuthStore();
+
+  const handleLogout = async () => {
+    await logout();
+  };
+
   return (
     <nav className="header navbar navbar-expand-lg bg-light sticky-top shadow-sm">
       <div className="container-fluid">
@@ -22,17 +34,23 @@ const Header = () => {
         </button>
         <div className="collapse navbar-collapse" id="navbarDropdownContainer">
           <div className="navbar-nav ms-auto gap-lg-3 me-lg-5">
-            <NavLink className="nav-link" aria-current="page" to={"/"}>
+            <NavLink end className={({ isActive }) => `navbar-link text-decoration-none d-flex align-items-center ${isActive ? 'active-link' : ''}`} to={"/"}>
               Home
             </NavLink>
-            <NavLink className="nav-link" to={"/app"}>
+            <NavLink end className={({ isActive }) => `navbar-link text-decoration-none d-flex align-items-center ${isActive ? 'active-link' : ''}`} to={"/app"}>
               Dashboard
             </NavLink>
-            <NavLink className="nav-link" to={"/app/settings"}>
-              Settings
+            <NavLink className={({ isActive }) => `navbar-link text-decoration-none d-flex align-items-center ${isActive ? 'active-link' : ''}`} to={"/app/api-key-management"}>
+              Manage Keys
             </NavLink>
-            <NavLink className="nav-link" to={"/app/profile"}>
-              Profile
+            <NavLink className={({ isActive }) => `navbar-link text-decoration-none d-flex align-items-center ${isActive ? 'active-link' : ''}`} to={"/app/docs"}>
+              Documentation
+            </NavLink>
+            <NavLink className={({ isActive }) => `navbar-link text-decoration-none d-flex align-items-center ${isActive ? 'active-link' : ''}`} to={"/app/profile"} title="profile">
+              <CircleUser size={35} style={{ color: "" }} />
+            </NavLink>
+            <NavLink className="nav-link d-flex align-items-center" onClick={handleLogout} title="logout">
+              <LogOut size={25} style={{ color: "var(--red-medium)" }} />
             </NavLink>
           </div>
         </div>
