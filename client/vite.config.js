@@ -17,7 +17,7 @@ export default defineConfig({
     port: 3051,
     proxy: {
       "/api": {
-        target: "http://localhost:3050",
+        target: "https://0ce05472-a142-4821-8b3e-5209c37843d3-00-1mtlnz3jlbx5z.pike.replit.dev",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
